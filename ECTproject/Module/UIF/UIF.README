@@ -1,0 +1,52 @@
+//***********************************************************************************************************************
+//
+//  Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @file 	 UIF.README
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/07/06
+//
+//  @brief 	 UIF 軟體模組說明
+//
+//**********************************************************************************************************************
+
+1. 模組功能說明:
+	User Interface Function 模組,主要負責UI介面的顯示與選單的管理,本版本支援圖形顯示
+
+2. 模組平台: 
+	Any where
+
+3. 關聯模組: 
+   LCD驅動模組,KEY,PFC,BTC,GDM
+
+4. 模組資源:
+   1.需要的 MCU 功能 :  None
+   2.需要的 I/O		:  None
+	3.需要的介面		:	None
+   4.需要的記憶體    :  29 Bytes
+
+
+5. 使用方式: 
+	執行 UIF_INIT_API()之後,使用者即可使用以下 API :
+	UIF_TASK_API()										: UIF TASK API 請放置在 PFC 的 Main Loop 中
+	UIF_CHK_STATE_CHG_API()    					: 判斷是否選單有切換跳耀
+	UIF_CHK_LEVEL_CHG_API()    					: 判斷是否選單有 LEVEL 切換跳耀    
+	UIF_STATE_INSTALL_API(state)     			: 安裝新選單 
+	UIF_STATE_REMOVE_API()           			: 移除目前選單 
+	UIF_LEVEL_NEXT_API()             			: 跳耀到同選單的下一個 LEVEL
+	UIF_DISPLAY_MENU_VAR_API(menu)   			: 顯示目前選單 FOCUS 的變數值
+	UIF_DISPLAY_VAR_BY_INDEX_API(index,value) : 利用系統變數索引值顯示變數值
+	UIF_DISPLAY_BUF_VAR_API()						: 顯示暫存變數的值
+	UIF_DISPLAY_MENU_PROMPT_API(menu)         : 顯示選單的字串
+    UIF_SET_BUF_VAR_API(var_index)            : 利用系統變數索引值將系統變數放到暫存變數 
+	UIF_GET_BUF_VAR_VALUE_API()               : 取得暫存變數的系統變數內容值
+	UIF_GET_BUF_VAR_ADDR_API()                : 取得暫存變數所儲存的系統變數位址 
+	UIF_GET_BUF_VAR_INDEX_API()               : 取得暫存變數所儲存的系統變數索引值 
+	UIF_GET_BUF_VAR_CURSOR_API()              : 取得暫存變數需要顯示 dot 數
+	UIF_SET_BUF_VAR_VALUE_API(val)            : 設定暫存變數所儲存的系統變數數值
+	UIF_SET_BUF_VAR_ADDR_API(addr)            : 設定暫存變數所儲存的系統變數位址
+	UIF_SET_BUF_VAR_INDEX_API(index)          : 設定暫存變數所儲存的系統變數的索引值
+	UIF_SET_BUF_VAR_CURSOR_API(cursor)        : 設定暫存變數需要顯示 dot 數
+  

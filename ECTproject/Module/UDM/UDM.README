@@ -1,0 +1,41 @@
+//***********************************************************************************************************************
+//
+//  Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @file 	 UDM.README
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/07/22
+//
+//  @brief 	 UDM 軟體模組說明
+//
+//**********************************************************************************************************************
+
+1. 模組功能說明:
+	UDM 模組負責管理UI介面的資料
+
+2. 模組平台: 
+	PIC
+
+3. 關聯模組: 
+   無
+
+4. 模組資源:
+   1.需要的 MCU 功能 :  None
+   2.需要的 I/O		 :  None
+   3.需要的介面	     :	None
+   4.需要的記憶體    :  None
+
+
+5. 使用方式: 
+	執行 UDM_INIT_API()之後,使用者即可使用以下 API :
+
+   UDM_INIT_API()						: UDM 模組初始化程式					
+   UDM_GET_FONT_TABLE(font_type)		: 取得字型庫表單
+   UDM_GET_FONT_W_API(font)			    : 取得目前字型寬度
+   UDM_GET_FONT_H_API(font)			    : 取得目前字型高度
+   UDM_GET_PROMPT_LEN_API(i)			: 取得 Prompt 的長度
+   UDM_GET_PROMPT_STR_API(i)			: 取得 Prompt 的內容
+   UDM_GET_SYMB_W_API(symb)			    : 取得圖示寬度
+   UDM_GET_SYMB_H_API(symb)			    : 取得圖示高度

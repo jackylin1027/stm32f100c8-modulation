@@ -1,0 +1,560 @@
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @file 	 uif_task.c
+//
+//! @author	 Willman
+//
+//! @date 	 2009/06/23
+//
+// @brief 	 Task Subroutine
+//
+//**********************************************************************************************************************
+//**********************************************************************************************************************
+//
+// I N C L U D E   F I L E S   /   E X T E R N A L   V A R I A B L E S
+//
+//**********************************************************************************************************************
+#include "..\drv_src\uif_drv.h"
+#include "..\uif_udef.h"
+#include UIF_MAIN_INCLUDE_STATE_H
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_display_box
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 Display a box
+//
+//! @param	 row  			The row we wana drawing a box
+//! @param	 col			The col we wana drawing a box
+//! @param   box_w			The width of box
+//! @param   box_h			The height of box
+//! @param	 line_width		The line width
+//
+//**********************************************************************************************************************
+void uif_display_box(UINT8 row,UINT8 col,UINT8 box_w,UINT8 box_h ,UINT8 line_width)
+{
+    UIF_SET_CURSOR_API(row,col);
+    UIF_FILL_RECT_API(box_w,box_h);
+    UIF_SET_CURSOR_API(row+line_width,col+line_width);
+    UIF_FILL_BLANK_API(box_w-2*line_width,box_h-2*line_width);
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_display_menu_cursor
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 Display menu item
+//
+//! @param	 row  			The menu we wana displaying
+//! @param	 col			The max item number of this menu
+//! @param	 row_step		The row of start position
+//! @param   col_step		The column of start posistion
+//
+//**********************************************************************************************************************
+void uif_display_menu_cursor(UINT8 row,UINT8 col,UINT8 row_step,UINT8 col_step)
+{
+    UINT8 i;
+    UIF_SET_CURSOR_API(row+row_step*UIF_MENU_PTR,col-col_step);
+    for (i=0; i<3; i++)
+        UIF_DIS_SYMB_API(UDM_BLANK_SYMB);
+    UIF_SET_CURSOR_API(row+row_step*UIF_MENU_PTR,col-col_step*(UIF_GET_HALF_SEC_CNT_API()&0x01));
+    for (i=0; i<2; i++)
+        UIF_DIS_SYMB_API(UDM_RIGHT_ARROW_SYMB);
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_display_menu_item
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 Display menu item
+//
+//! @param	 menu  		The menu we wana displaying
+//! @param	 max_item	The max item number of this menu
+//! @param	 row		The row of start position
+//! @param   col		The column of start posistion
+//! @param	 row_step	The row_step between every lines
+//**********************************************************************************************************************
+void uif_display_menu_item(UINT8 *menu_addr,UINT8 row,UINT8 col,UINT8 row_step)
+{
+    UINT8 	i;
+    STC_UIF_MENU *menu=(STC_UIF_MENU*)menu_addr;
+    for (i=0; i<gs_uif_state->menu_max_line; i++)
+    {
+        UIF_SET_CURSOR_API(row+row_step*i,col);
+        switch (PFC_LANGUAGE)
+        {
+        case PFC_ENGLISH:
+            UIF_DIS_STR_API(UIF_GET_PROMPT_STR_API((menu+UIF_MENU_TOP+i)->prompt));
+            break;
+        case PFC_TRADICTIONAL:
+        case PFC_SIMPLE:
+            UIF_DIS_SYMB_API(UIF_GET_PROMPT_STR_API(((menu+UIF_MENU_TOP+i)->prompt)));
+            break;
+        }
+
+    }
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_display_menu
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 Display menu item
+//
+//! @param	 prompt  The index of menu prompt
+//**********************************************************************************************************************
+void uif_display_menu_box(UINT32 prompt)
+{
+    UIF_CLEAR_SCREEN_API();
+    UIF_SET_CURSOR_API(0,0);
+    UIF_FILL_RECT_API(GDM_MAX_SEG,1);
+    UIF_SET_CURSOR_API(0,0);
+    UIF_FILL_RECT_API(1,(GDM_MAX_LINE<<3));
+    UIF_SET_CURSOR_API((GDM_MAX_LINE<<3)-1,0);
+    UIF_FILL_RECT_API(GDM_MAX_SEG-1,1);
+    UIF_SET_CURSOR_API(0,GDM_MAX_SEG-1);
+    UIF_FILL_RECT_API(1,(GDM_MAX_LINE<<3));
+    UIF_SET_CURSOR_API(0,0);
+    UIF_FILL_RECT_API(GDM_MAX_SEG,11);
+    UIF_SET_CURSOR_API(0,0);
+    UIF_FILL_RECT_API(GDM_MAX_SEG-1,12);
+    switch (PFC_LANGUAGE)
+    {
+    case PFC_ENGLISH:
+        UIF_SET_CURSOR_API(3,3);
+        //UIF_DIS_CENTER_STR_XOR_API(UIF_GET_PROMPT_STR_API(prompt));		break;
+        UIF_DIS_STR_XOR_API(UIF_GET_PROMPT_STR_API(prompt));
+        break;
+    case PFC_TRADICTIONAL:
+    case PFC_SIMPLE:
+        UIF_SET_CURSOR_API(1,(GDM_MAX_SEG-UIF_GET_PROMPT_LEN_API(prompt))>>1);
+        UIF_DIS_SYMB_XOR_API(UIF_GET_PROMPT_STR_API(prompt));
+        break;
+    }
+}
+
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_add_buf_var
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 Put the buffer value back to the system variable,and exit current menu state
+//
+//**********************************************************************************************************************
+void uif_save_buf_var_and_exit()
+{
+    /*
+      UINT32 *ptr=gs_uif_num_buf.addr;
+      *ptr=gs_uif_num_buf.value;
+      UIF_RESTORE_EEPROM_SETTING_API();
+      uif_state_remove();
+    */
+}
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_add_buf_var
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 Adding 1 unit for the buffer variable
+//
+//**********************************************************************************************************************
+void uif_add_buf_var(void *arg)
+{
+    /*
+      UINT32 add=1;
+      UINT8 i;
+      //for (i=0;i<gs_uif_num_buf.cursor;i++)
+      //  add*=10;
+
+      //gs_uif_num_buf.value+=add;
+      //if (gs_uif_num_buf.value > UIF_GET_MAX_VALUE_BY_INDEX_API(gs_uif_num_buf.index))
+      //  gs_uif_num_buf.value=UIF_GET_MIN_VALUE_BY_INDEX_API(gs_uif_num_buf.index);
+      if (gs_uif_num_buf.cursor>=
+    */
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_move_buf_var_cursor
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 Move the cursor of gs_uif_num_buf
+//
+//**********************************************************************************************************************
+void uif_move_buf_var_cursor()
+{
+    /*
+      UINT32 val=1;
+      UINT8 i;
+      gs_uif_num_buf.cursor++;
+      //gs_uif_num_buf.cursor%=UIF_MAX_LCD_DIGITAL;
+      //for (i=0;i<gs_uif_num_buf.cursor;i++)
+      // val*=10;
+      //if ((UIF_GET_MAX_VALUE_BY_INDEX_API(gs_uif_num_buf.index)/val)==0)
+        gs_uif_num_buf.cursor=0;
+    */
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_set_buf_var
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 setting the system variable into the buffer
+//
+//! @param 	 The index of system variables
+//
+//**********************************************************************************************************************
+void uif_set_buf_var(UINT8 var_index)
+{
+    /*
+      UINT32 *ptr=(UINT32*)&gs_pfc_vars;
+      gs_uif_num_buf.addr=ptr+var_index;
+      gs_uif_num_buf.value=*gs_uif_num_buf.addr;
+      gs_uif_num_buf.index=var_index;
+      gs_uif_num_buf.cursor=0;
+    */
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_null_func
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 for keymap null function
+//
+//**********************************************************************************************************************
+void uif_null_func()
+{
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_level_next
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 move to next level
+//
+//**********************************************************************************************************************
+void uif_level_next()
+{
+    gs_uif_status.level_chg=1;
+    if (++UIF_MENU_PTR>=gs_uif_state->menu_max_line)
+    {
+        UIF_MENU_PTR--;
+        UIF_MENU_TOP++;
+    }
+
+    if (UIF_MENU_PTR+UIF_MENU_TOP>=gs_uif_state->item_cnt)
+        UIF_MENU_PTR=UIF_MENU_TOP=0;
+
+    UIF_SET_ACTION_FLAG_API();
+    UIF_CLR_KEY_BUF_API();
+    UIF_SET_MENU_TIMEOUT_API();
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_level_last
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 move to next level
+//
+//**********************************************************************************************************************
+void uif_level_last()
+{
+    gs_uif_status.level_chg=1;
+    if (--UIF_MENU_PTR<0)
+    {
+        if (UIF_MENU_TOP)
+        {
+            UIF_MENU_TOP--;
+            UIF_MENU_PTR++;
+        }
+        else
+        {
+            UIF_MENU_PTR=gs_uif_state->menu_max_line-1;
+            UIF_MENU_TOP=gs_uif_state->item_cnt-gs_uif_state->menu_max_line;
+        }
+    }
+
+    UIF_SET_ACTION_FLAG_API();
+    UIF_CLR_KEY_BUF_API();
+    UIF_SET_MENU_TIMEOUT_API();
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_chk_level_chg
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	check level change event
+//
+// @return 	result Level change or not
+//
+//**********************************************************************************************************************
+UINT8 uif_chk_level_chg()
+{
+    UINT8 result=gs_uif_status.level_chg;
+    gs_uif_status.level_chg=0;
+    return result;
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_chk_state_chg
+//
+//! @author	 Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 check state change event
+//
+// @return 	 result State change or not
+//
+//**********************************************************************************************************************
+UINT8 uif_chk_state_chg()
+{
+    UINT8 result=gs_uif_status.state_chg;
+    gs_uif_status.state_chg=0;
+    return result;
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_state_remove
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 remove state
+//
+//**********************************************************************************************************************
+void uif_state_remove()
+{
+    if (!gb_uif_stack_ptr)
+        return ;
+    gs_uif_status.state_chg=1;
+    gs_uif_status.level_chg=1;
+    UIF_MENU_PTR=gs_uif_stack[--gb_uif_stack_ptr].menu_ptr;
+    UIF_MENU_TOP=gs_uif_stack[gb_uif_stack_ptr].menu_top;
+    gs_uif_state=gs_uif_stack[gb_uif_stack_ptr].state;
+    UIF_CLR_SEC_CNT_API();
+    UIF_CLR_HALF_SEC_CNT_API();
+    UIF_CLR_QUARTER_SEC_CNT_API();
+    UIF_SET_ACTION_FLAG_API();
+    UIF_CLR_KEY_BUF_API();
+    UIF_SET_MENU_TIMEOUT_API();
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_state_reduce
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 reduce state
+//
+//! @param	 level	The level count we wana reducing
+//**********************************************************************************************************************
+void uif_state_reduce(UINT8 level)
+{
+    if (gb_uif_stack_ptr<level)
+        return ;
+    gs_uif_status.state_chg=1;
+    gs_uif_status.level_chg=1;
+    gb_uif_stack_ptr-=level;
+    UIF_MENU_PTR=gs_uif_stack[gb_uif_stack_ptr].menu_ptr;
+    UIF_MENU_TOP=gs_uif_stack[gb_uif_stack_ptr].menu_top;
+    gs_uif_state=gs_uif_stack[gb_uif_stack_ptr].state;
+    UIF_SET_ACTION_FLAG_API();
+    UIF_CLR_KEY_BUF_API();
+    UIF_SET_MENU_TIMEOUT_API();
+    UIF_CLR_SEC_CNT_API();
+    UIF_CLR_HALF_SEC_CNT_API();
+    UIF_CLR_QUARTER_SEC_CNT_API();
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_state_install
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 install menu
+//
+// @param 	 New state
+//
+//**********************************************************************************************************************
+void uif_state_install(UINT8 *new_state_temp)
+{
+    STC_UIF_STATE *new_state=(STC_UIF_STATE*)new_state_temp;
+    gs_uif_status.state_chg=1;
+    gs_uif_status.level_chg=1;
+    // push current menu into stack,if the next state level number is bigger then now.
+    if (new_state->level>gs_uif_state->level)
+    {
+        gs_uif_stack[gb_uif_stack_ptr].state=gs_uif_state;
+        gs_uif_stack[gb_uif_stack_ptr].menu_top=gs_uif_status.menu_top;
+        gs_uif_stack[gb_uif_stack_ptr++].menu_ptr=gs_uif_status.menu_ptr;
+    }
+    else
+    {
+        // pop back the menu ,then install new menu state
+        while (gs_uif_state->level > new_state->level)
+        {
+            gs_uif_state=gs_uif_stack[--gb_uif_stack_ptr].state;
+            UIF_MENU_PTR=gs_uif_stack[gb_uif_stack_ptr].menu_ptr;
+            UIF_MENU_TOP=gs_uif_stack[gb_uif_stack_ptr].menu_top;
+        }
+    }
+    gs_uif_state=new_state;
+    UIF_MENU_PTR=0;
+    UIF_MENU_TOP=0;
+    UIF_CLR_SEC_CNT_API();
+    UIF_CLR_HALF_SEC_CNT_API();
+    UIF_CLR_QUARTER_SEC_CNT_API();
+    UIF_SET_ACTION_FLAG_API();
+    UIF_CLR_KEY_BUF_API();
+    UIF_SET_MENU_TIMEOUT_API();
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 	 uif_state_next_install
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 install next menu state
+//
+//! @param 	 arg the current menu state
+//
+//**********************************************************************************************************************
+void uif_state_next_install(void *arg)
+{
+    STC_UIF_MENU *menu=arg;
+    menu+=UIF_MENU_PTR+UIF_MENU_TOP;
+    if (menu->state!=UIF_NULL)
+        uif_state_install((UINT8*)menu->state);
+}
+
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 		 uif_task
+//
+//! @author 	 Willman Chen
+//
+//! @date 	 2009/06/23
+//
+//! @brief 	 task function
+//
+//**********************************************************************************************************************
+void uif_task()
+{
+
+    UINT8 i;
+    STC_UIF_KEYMAP const *key_ptr=gs_uif_state->menu_click_keymap;
+    for (i=KEY_START; i<KEY_TOTAL; i++,key_ptr++)
+    {
+        if (key_ptr->key_func!=UIF_NULL_FUNC && KEY_CLICK_CHK_API(i))
+            key_ptr->key_func(key_ptr->arg);
+    }
+    gs_uif_state->menu_func();
+    if (gs_uif_status.key_event)
+    {
+        UIF_SET_MENU_TIMEOUT_API();
+        UIF_TURN_ON_BACKLIGHT_API();
+    }
+    // if timeout ,we need to go back to Status State
+    if (UIF_CHK_MENU_TIMEOUT_API())
+    {
+        UIF_TURN_OFF_BACKLIGHT_API();
+        UIF_STATE_REMOVE_API();
+    }
+}

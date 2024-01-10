@@ -1,0 +1,49 @@
+//***********************************************************************************************************************
+//
+//  Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @file 	 ST7565.README
+//
+//! @author  Willman Chen
+//
+//! @date 	 2009/07/22
+//
+//  @brief 	 ST7565 軟體模組說明
+//
+//**********************************************************************************************************************
+
+1. 模組功能說明:
+	ST7565 模組負責驅動以 ST7565 晶片驅動的圖形式 LCD 
+
+2. 模組平台: 
+	PIC
+
+3. 關聯模組: 
+   無
+
+4. 模組資源:
+   1.需要的 MCU 功能 :  None
+   2.需要的 I/O		 :  PMA ( DataBus )
+   3.需要的介面	     :	None
+   4.需要的記憶體    :  None
+
+
+5. 使用方式: 
+   執行 ST7565_INIT_API() 之後,使用者即可使用以下 API :
+
+   ST7565_INIT_API()														: ST7565 模組初始化程式					
+   ST7565_WRITE_CMD_API(cmd)												: 傳送指令到 LCD                                              
+   ST7565_WRITE_DATA_API(data)												: 傳送資料到 LCD                           
+   ST7565_DISPLAY_ON_API()													: 開啟顯示                                        
+   ST7565_DISPLAY_OFF_API()												    : 關閉顯示                      
+   ST7565_SET_START_LINE_API(line)											: 設定起始線                        
+   ST7565_SET_START_PAGE_API(page)											: 設定 Row    座標        
+   ST7565_SET_COLUMN_API(col)												: 設定 Column 座標             
+   ST7565_SET_DISPLAY_DIRECTION_NORMAL_API()								: 正向顯示方向              
+   ST7565_SET_DISPLAY_DIRECTION_INVERSE_API()								: 反向顯示方向                                   
+   ST7565_SET_PIXEL_NORMAL_API()											: 一般點素顯示                                     
+   ST7565_SET_PIXEL_INVERSE_API()											: 反向點素顯示                                 
+   ST7565_SET_ALL_PIXELS_ON_API()											: 所有點素全亮                               
+   ST7565_SET_NOT_ALL_PIXELS_ON_API()										: 關閉所有點素全亮                                
+   ST7565_SET_BIAS_API(bias)												: 設定點素顏色比重                                     
+   ST7565_RESET_LCD_API()													: 重新設定 LCD                     

@@ -1,0 +1,162 @@
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @file 	 uif_show_value_state.c
+//
+//! @author 	 Willman Chen
+//
+//! @date 	 2009/07/31
+//
+//  @brief 	 uif_show_value_state functions
+//
+//**********************************************************************************************************************
+//**********************************************************************************************************************
+//
+// I N C L U D E   F I L E S   /   E X T E R N A L   V A R I A B L E S
+//
+//**********************************************************************************************************************
+#include "uif_glb_vars.h"
+#include "uif_idef.h"
+#include "..\uif_udef.h"
+#include "uif_main_menu_state.h"
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @author 	 Willman Chen
+//
+//! @date 		 2009/07/31
+//
+//! @brief 		 uif_show_value Level list definition
+//
+//**********************************************************************************************************************
+enum UIF_SHOW_VALUE_LEVEL_LIST
+{
+    UIF_SHOW_VALUE_LEVEL,
+    UIF_SHOW_VALUE_TOTAL,
+};
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @author 	 Willman Chen
+//
+//! @date 		 2009/07/31
+//
+//! @brief 		 uif_show_value map definition
+//
+//**********************************************************************************************************************
+const STC_UIF_MENU uif_show_value_menu_map[]=
+{
+//   Prompt     	 	next state  		var index		var_type
+    UIF_NULL			,UIF_NULL			,UIF_NULL			,UIF_NULL
+};
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @fn 			 uif_show_value_state_task
+//
+//! @author 	 Willman Chen
+//
+//! @date 		 2009/07/31
+//
+//! @brief 		 task function
+//
+//! @param 		 None
+//
+//! @return 	 None
+//
+//**********************************************************************************************************************
+void uif_show_value_state_task()
+{
+    UINT16  i,value;
+    UINT8 digi[6];
+    digi[5]=0;
+
+    if (KEY_CLICK_CHK_API(KEY_ENTER))
+        UIF_SET_SEC_CNT_API(100);
+    if (KEY_CLICK_CHK_API(KEY_UP))
+        UIF_SET_SEC_CNT_API(80);
+    if (KEY_CLICK_CHK_API(KEY_DOWN))
+        UIF_SET_SEC_CNT_API(60);
+    if (KEY_CLICK_CHK_API(KEY_ESC))
+        UIF_SET_SEC_CNT_API(40);
+    if (KEY_CLICK_CHK_API(KEY_LEFT))
+        UIF_SET_SEC_CNT_API(20);
+    if (KEY_CLICK_CHK_API(KEY_RIGHT))
+        UIF_SET_SEC_CNT_API(10);
+
+    if (UIF_GET_SEC_CNT_API()==0)
+        UIF_SET_SEC_CNT_API(100);
+
+    if (UIF_GET_HALF_SEC_CNT_API()==0)
+         UIF_SET_HALF_SEC_CNT_API(100);
+
+    UIF_SET_FONT_API(0);
+    UIF_DIS_MENU_BOX_API(COMPANY_PROMPT);
+    UIF_SET_FONT_API(0);
+    UIF_SET_CURSOR_API(53,5);
+    UIF_DIS_STR_API("M CM MM INCH FT % MA");
+    
+    if (UIF_GET_HALF_SEC_CNT_API()%2==0)
+    {
+      UIF_SET_CURSOR_API(52,4);
+      GDM_FILL_RECT_XOR_API(7,10);
+    }
+
+    value=UIF_GET_SEC_CNT_API();
+    //value=(UINT16)PFC_DISPLAY_VALUE;
+    for (i=0; i<5; i++)
+    {
+        digi[i]=value%10;
+        value/=10;
+    }
+    UIF_SET_CURSOR_API(12,5);
+    UIF_FILL_BLANK_API(120,40);
+    for (i=0; i<5; i++)
+    {
+        UIF_SET_CURSOR_API(15,(4-i)*23);
+        UIF_DIS_SYMB_XOR_API(UIF_GET_BIG_NUM_API(digi[i]));
+    }
+
+    UIF_LCD_REFRESH_API();
+}
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @author 	 Willman Chen
+//
+//! @date 		 2009/07/31
+//
+//! @brief 		 show_value keymap
+//
+//**********************************************************************************************************************
+const STC_UIF_KEYMAP uif_show_value_keymap[]=
+{
+    UIF_NULL_FUNC,    UIF_NULL,     // KEY_ENTER
+    UIF_NULL_FUNC,    UIF_NULL,     // KEY_UP
+    UIF_NULL_FUNC,    UIF_NULL,	    // KEY_DOWN
+    UIF_NULL_FUNC,    UIF_NULL,     // KEY_ESC
+    UIF_NULL_FUNC,    UIF_NULL,	    // KEY_LEFT
+    UIF_NULL_FUNC,    UIF_NULL,     // KEY_RIGHT
+};
+//**********************************************************************************************************************
+//
+// Copyright (C) 2009, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+//
+//! @author 	 Willman Chen
+//
+//! @date 		 2009/07/31
+//
+//! @brief 		 SHOW_VALUE state Table
+//
+//**********************************************************************************************************************
+const STC_UIF_STATE uif_show_value_state=
+{
+    /*        level                  item_cnt                     menu_func           			 menu_keymap   			max_line*/
+    UIF_STATUS_LEVEL       ,UIF_SHOW_VALUE_TOTAL       ,uif_show_value_state_task,       uif_show_value_keymap	,0
+};
+

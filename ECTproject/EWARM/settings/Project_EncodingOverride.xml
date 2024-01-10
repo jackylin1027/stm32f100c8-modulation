@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<userOverrides>
+  <override>
+    <path>C:\Users\lin71\Desktop\&#x3010;FineTek&#x3011;\SPX\ECTproject\Module\PFC\c_src\pfc_glb_vars.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Users\lin71\Desktop\&#x3010;FineTek&#x3011;\SPX\ECTproject\Module\PFC\c_src\pfc_glb_vars.h</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>C:\Users\lin71\Desktop\&#x3010;FineTek&#x3011;\SPX\ECTproject\Module\PFC\c_src\pfc_task.c</path>
+    <encoding>System</encoding>
+  </override>
+</userOverrides>
+
+
