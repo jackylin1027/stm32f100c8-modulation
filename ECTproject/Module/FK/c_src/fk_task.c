@@ -556,7 +556,29 @@ extern "C"
         FK_TIMER_INTERRUPT_START(gt_fk_timer_handle[timer]); 
         HAL_TIM_Base_Start_IT(gt_fk_timer_handle[timer]);
   }
-  
+  //**********************************************************************************************************************
+  //
+  // Copyright (C) 2010, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+  //
+  //! @fn 	 fk_timer_interrupt_register_callback
+  //
+  //! @author 	 Jacky Lin
+  //
+  //! @date 	 2024/01/11
+  //
+  //! @brief 	 register function for timer interrupt
+  //
+  //! @param	 None
+  //
+  //! @return 	 None
+  //
+  //**********************************************************************************************************************  
+  void fk_timer_interrupt_register_callback(UINT8 timer, void (*func) (void))
+  {
+        gfunc_fk_timer_interrupt[timer]=func;
+        FK_TIMER_INTERRUPT_START(gt_fk_timer_handle[timer]); 
+        HAL_TIM_Base_Start_IT(gt_fk_timer_handle[timer]);  
+  }
   //**********************************************************************************************************************
   //
   // Copyright (C) 2010, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved

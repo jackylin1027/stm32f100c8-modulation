@@ -84,6 +84,7 @@ void fk_nvic_enable(UINT32 irq_channel,UINT32 priority,UINT32 enable);
 void fk_i2c1_hw_check_timeout_func(void);
 void fk_reset_rtc_alarm(void);
 UINT8 fk_pin_index(UINT32 pin);
+  void fk_timer_interrupt_register_callback(UINT8 timer, void (*func) (void));
 //**********************************************************************************************************************
 //
 // C   P L U S   P L U S   C O M P A T I A B L E   D E F I N I T I O N

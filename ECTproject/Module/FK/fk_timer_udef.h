@@ -42,9 +42,17 @@ extern "C"
 //**********************************************************************************************************************
 //! @brief The API for initial tim4 by interrupt continue mode           
 #define FK_SET_MS_TIMER_INTERRUPT4_FUNC_CONTINUE_API(ms,func)                   fk_timer_interrupt_enable(FK_TIMER_INTERRUPT4,(HAL_RCC_GetPCLK1Freq()/1000),ms,func)
+//! @brief The API for register callback for timer4 interrupt
+#define FK_SET_TIMER_INTERRUPT4_FUNC_REGISTER_CALLBACK(func)                    fk_timer_interrupt_register_callback(FK_TIMER_INTERRUPT4,func)                           
 //! @brief The API for initial tim4 by interrupt continue mode           
 #define FK_SET_MS_TIMER_INTERRUPT3_FUNC_CONTINUE_API(ms,func)                   fk_timer_interrupt_enable(FK_TIMER_INTERRUPT3,(HAL_RCC_GetPCLK1Freq()/1000),ms,func)
-//============================================================================================================================//
+//! @brief The API for register callback for timer3 interrupt
+#define FK_SET_TIMER_INTERRUPT3_FUNC_REGISTER_CALLBACK(func)                    fk_timer_interrupt_register_callback(FK_TIMER_INTERRUPT3,func)    
+//! @brief The API for initial tim2 by interrupt continue mode           
+#define FK_SET_MS_TIMER_INTERRUPT2_FUNC_CONTINUE_API(ms,func)                   fk_timer_interrupt_enable(FK_TIMER_INTERRUPT2,(HAL_RCC_GetPCLK1Freq()/1000),ms,func)
+//! @brief The API for register callback for timer2 interrupt
+#define FK_SET_TIMER_INTERRUPT2_FUNC_REGISTER_CALLBACK(func)                    fk_timer_interrupt_register_callback(FK_TIMER_INTERRUPT2,func)      
+  //============================================================================================================================//
 // You Could configure FK_INTERRUPT_FUNC_TOTAL variable in fk_idef.h for changing the timer set
 //============================================================================================================================//
 #define FK_SET_TIMER_INPUT_CHANNEL_1_FALLING_EDGE_CAPTURE_FUNC_API(port,pin,func)     	        fk_timer_capture_enable(FK_INTERRUPT5_INPUT_CAPTURE,FK_TIMER_CHANNEL1,(UINT32)port,pin,FK_FALLING_EDGE,func)
