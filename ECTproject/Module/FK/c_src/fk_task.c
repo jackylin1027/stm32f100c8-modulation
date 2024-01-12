@@ -678,8 +678,6 @@ extern "C"
   void fk_adc_functions(ADC_HandleTypeDef* hdac,UINT8 channel,DMA_HandleTypeDef* hadcdma,UINT8 func_index,UINT8 func_mode,void (*func)(void),UINT16 *buf,UINT32 size)
   {
     
-        GPIO_InitTypeDef GPIO_InitStructure;
-        ADC_InitTypeDef ADC_InitStructure;
         UINT32 port=(UINT32)gt_fk_adc_port[channel];
         UINT8 pin=gt_fk_adc_pin[channel];
         UINT8 port_index=fk_port_index(port);
@@ -909,10 +907,28 @@ extern "C"
   {
       // Initial function complemmently by CubeMX software, so cancel the function in fk_lib, JackyLin //   
   }
-  
-  
-  
-  
+    //**********************************************************************************************************************
+  //
+  // Copyright (C) 2010, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved
+  //
+  //! @fn 	 fk_set_io_interrupt_register_callback
+  //
+  //! @author 	 Jacky Lin
+  //
+  //! @date 	 2024/01/12
+  //
+  //! @brief 	 register callback for exti irq 
+  //
+  //! @param	 the param of port is not used at persent
+  //
+  //! @return 	 None
+  //
+  //**********************************************************************************************************************
+  void fk_set_io_interrupt_register_callback(UINT32 port,UINT32 pin, void (*func)(void))
+  {
+      UINT8 pin_index = fk_pin_index(pin); 
+      gfunc_fk_exti_func[pin_index] = func;
+  }
   //**********************************************************************************************************************
   //
   // Copyright (C) 2010, FINE-TEK CO.,LTD. Taiwan  All Rights Reserved

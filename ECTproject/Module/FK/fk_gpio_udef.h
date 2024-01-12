@@ -189,8 +189,9 @@ extern "C"
 //#define FK_SET_RASING_INTERRUPT_PIN_API(port,pin,func)            				fk_set_io_interrupt((UINT32)port,pin,FK_TRIGGER_RASING,func,ENABLE)
 //
 //! @brief Setting Interrupt Pin Function ( Falling Interrupt )
-#define FK_SET_FALLING_INTERRUPT_PIN_API(port,pin,func)           				fk_set_io_interrupt((UINT32)port,pin,FK_TRIGGER_FALLING,func,ENABLE)
-
+#define FK_SET_FALLING_INTERRUPT_PIN_API(port,pin,func)           			fk_set_io_interrupt((UINT32)port,pin,FK_TRIGGER_FALLING,func,ENABLE)
+//! @brief Register callback function corresponding pin
+#define FK_SET_INTERRUPT_PIN_REGISTER_CALLBACK(port,pin,func)                           fk_set_io_interrupt_register_callback((UINT32)port,pin,func)   
 ////! @brief Setting Interrupt Pin Function ( Rasing && Falling Interrupt )
 //#define FK_SET_RASING_FALLING_INTERRUPT_PIN_API(port,pin,func)                                  fk_set_io_interrupt((UINT32)port,pin,FK_TRIGGER_RASING_FALLING,func,ENABLE)
 //

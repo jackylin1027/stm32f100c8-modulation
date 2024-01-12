@@ -36,11 +36,15 @@ extern "C"
 //
 //**********************************************************************************************************************
 // SPI Function
-#define FK_SPI1_ENABLE_API(buf,len)											    fk_spi_init(FK_SPI1,FK_DMA_CHANNEL_TOTAL,buf,len)
-#define FK_SPI2_ENABLE_API(buf,len)											    fk_spi_init(FK_SPI2,FK_DMA_CHANNEL_TOTAL,buf,len)     
-#define FK_SPI1_DMA_ENABLE_API(dma_channel,buf,len)					            fk_spi_init(FK_SPI1,dma_channel,buf,len)
-#define FK_SPI2_DMA_ENABLE_API(dma_channel,buf,len)					            fk_spi_init(FK_SPI2,dma_channel,buf,len)  
-
+#define FK_SPI1_ENABLE_API(buf,len)				        fk_spi_init(FK_SPI1,FK_DMA_CHANNEL_TOTAL,buf,len)
+#define FK_SPI2_ENABLE_API(buf,len)			                fk_spi_init(FK_SPI2,FK_DMA_CHANNEL_TOTAL,buf,len)     
+#define FK_SPI1_DMA_ENABLE_API(dma_channel,buf,len)		        fk_spi_init(FK_SPI1,dma_channel,buf,len)
+#define FK_SPI2_DMA_ENABLE_API(dma_channel,buf,len)		        fk_spi_init(FK_SPI2,dma_channel,buf,len)  
+  
+#define FK_SPI1_RECEIVE_API(data,cnt,timeout)                           HAL_SPI_Receive(&fk_spi1,data,cnt,timeout)
+#define FK_SPI2_RECEIVE_API(data,cnt,timeout)                           HAL_SPI_Receive(&fk_spi2,data,cnt,timeout)
+#define FK_SPI1_TRANSMIT_API(data,cnt,timeout)                          HAL_SPI_Transmit(&fk_spi1,data,cnt,timeout)  
+#define FK_SPI2_TRANSMIT_API(data,cnt,timeout)                          HAL_SPI_Transmit(&fk_spi2,data,cnt,timeout)
 //**********************************************************************************************************************
 //
 // F U N C T I O N   P R O T O T Y P E S

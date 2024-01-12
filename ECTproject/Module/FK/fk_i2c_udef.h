@@ -37,13 +37,21 @@ extern "C"
 //========================================================================================================//
 //! @brief I2C1 Bus use H/W Driver
 //========================================================================================================//
-//#define	FK_IIC_HW_INIT_API()						                                 iic_hw_init()
-#define FK_I2C1_HW_TASK_API() 						                                    fk_i2c1_hw_task()
-#define	FK_I2C1_HW_CHECK_TIMEOUT_API()						                            fk_i2c1_hw_check_timeout_func()//HTBC
-
-#define	FK_I2C1_HW_BYTE_WRITE_API(devid,addr,cnt,data,timeout)  	        HAL_I2C_Mem_Write(&fk_i2c1,devid,addr,I2C_MEMADD_SIZE_8BIT,data,cnt,timeout)
-#define	FK_I2C1_HW_BYTE_READ_API(devid,addr,cnt,data,timeout)  	                HAL_I2C_Mem_Read(&fk_i2c1,devid,addr,I2C_MEMADD_SIZE_8BIT,data,cnt,timeout)
-
+//#define	FK_IIC_HW_INIT_API()						     iic_hw_init()
+#define FK_I2C1_HW_TASK_API() 						        fk_i2c1_hw_task()
+#define	FK_I2C1_HW_CHECK_TIMEOUT_API()						fk_i2c1_hw_check_timeout_func()//HTBC
+//! @brief The API that used to I2C1 read/write MEM function call I2C HAL library in fk_i2c_udef.h if you want to communicate with memory relative chip
+#define	FK_I2C1_HW_BYTE_WRITE_MEM_API(devid,addr,cnt,data,timeout)  	        HAL_I2C_Mem_Write(&fk_i2c1,devid,addr,I2C_MEMADD_SIZE_8BIT,data,cnt,timeout)
+#define	FK_I2C1_HW_BYTE_READ_MEM_API(devid,addr,cnt,data,timeout)  	        HAL_I2C_Mem_Read(&fk_i2c1,devid,addr,I2C_MEMADD_SIZE_8BIT,data,cnt,timeout)
+//! @brief The API that used to I2C2 read/write MEM function call I2C HAL library in fk_i2c_udef.h if you want to communicate with memory relative chip
+#define	FK_I2C2_HW_BYTE_WRITE_MEM_API(devid,addr,cnt,data,timeout)  	        HAL_I2C_Mem_Write(&fk_i2c2,devid,addr,I2C_MEMADD_SIZE_8BIT,data,cnt,timeout)
+#define	FK_I2C2_HW_BYTE_READ_MEM_API(devid,addr,cnt,data,timeout)  	        HAL_I2C_Mem_Read(&fk_i2c2,devid,addr,I2C_MEMADD_SIZE_8BIT,data,cnt,timeout)
+//! @brief The API that used to I2C2 transmitter/receive function call I2C HAL library in fk_i2c_udef.h
+#define	FK_I2C1_HW_BYTE_WRITE_API(devid,cnt,data,timeout)  	                HAL_I2C_Master_Transmit(&fk_i2c1,devid,data,cnt,timeout)
+#define	FK_I2C1_HW_BYTE_READ_API(devid,cnt,data,timeout)  	                HAL_I2C_Master_Receive(&fk_i2c1,devid,data,cnt,timeout)
+//! @brief The API that used to I2C2 transmitter/receive function call I2C HAL library in fk_i2c_udef.h
+#define	FK_I2C2_HW_BYTE_WRITE_API(devid,cnt,data,timeout)  	                HAL_I2C_Master_Transmit(&fk_i2c2,devid,data,cnt,timeout)
+#define	FK_I2C2_HW_BYTE_READ_API(devid,cnt,data,timeout)  	                HAL_I2C_Master_Receive(&fk_i2c2,devid,data,cnt,timeout)
 //========================================================================================================//
 //! @brief I2C Bus use I/O simulation
 //========================================================================================================//
