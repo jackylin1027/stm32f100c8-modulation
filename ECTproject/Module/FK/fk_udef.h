@@ -32,6 +32,8 @@ extern "C"
 #define INT64                                         	long long
 #define FLOAT32                                       	float
 #define FLOAT64                                       	double
+#define FALSE                                           0
+#define TRUE                                            1
 #include "..\Inc\main.h"
 //**********************************************************************************************************************
 //
@@ -140,6 +142,9 @@ extern "C"
 #define FK_FALLING_EDGE                TIM_ICPolarity_Falling
 #define FK_RASING_EDGE                 TIM_ICPolarity_Rising
 #define FK_BOTH_EDGE                   TIM_ICPolarity_BothEdge
+    
+    
+
 //**********************************************************************************************************************
 //
 // I N C L U D E   F I L E S   /   E X T E R N A L   V A R I A B L E S

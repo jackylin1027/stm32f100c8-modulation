@@ -53,7 +53,7 @@ void 		fk_dma_enable(UINT8 channel,UINT32 *source,UINT32 *dest,UINT32 size,void(
 void 		fk_nvic_disable(UINT32 irq_channel);
 void 		fk_timer_interrupt_enable(UINT8 timer,UINT32 prescale,UINT32 count,void(*func)(void));
 void 		fk_hal_uart_init(UINT8 comport,UINT32 baudrate,UINT16 bits,UINT16 stop_bits,UINT16 parity,UINT8 mode,UINT8(*tx_func)(void),void(*rx_func)(void));
-void 		fk_adc_functions(UINT8 set,UINT8 channel,UINT8 dma_channel,UINT8 func_index,UINT8 func_mode,void (*func)(void),UINT16 *buf,UINT32 size);
+void 		fk_adc_functions(ADC_HandleTypeDef* set,UINT8 channel,DMA_HandleTypeDef* dma_channel,UINT8 func_index,UINT8 func_mode,void (*func)(void),UINT16 *buf,UINT32 size);
 UINT16 	    fk_adc_polling(UINT8 set);
 void 		fk_set_dac(UINT8 channel,UINT32 port,UINT32 pin);
 void 		fk_speed_up(void);

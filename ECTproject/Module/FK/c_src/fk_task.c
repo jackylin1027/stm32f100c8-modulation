@@ -675,9 +675,117 @@ extern "C"
   //! @return 	 None
   //
   //**********************************************************************************************************************
-  void fk_adc_functions(UINT8 set,UINT8 channel,UINT8 dma_channel,UINT8 func_index,UINT8 func_mode,void (*func)(void),UINT16 *buf,UINT32 size)
+  void fk_adc_functions(ADC_HandleTypeDef* hdac,UINT8 channel,DMA_HandleTypeDef* hadcdma,UINT8 func_index,UINT8 func_mode,void (*func)(void),UINT16 *buf,UINT32 size)
   {
-      // Initial function complemmently by CubeMX software, so cancel the function in fk_lib, JackyLin //   
+    
+        GPIO_InitTypeDef GPIO_InitStructure;
+        ADC_InitTypeDef ADC_InitStructure;
+        UINT32 port=(UINT32)gt_fk_adc_port[channel];
+        UINT8 pin=gt_fk_adc_pin[channel];
+        UINT8 port_index=fk_port_index(port);
+        UINT8 pin_index=fk_pin_index(pin);
+        UINT8 channel2,port2_index;
+        UINT32 port2;
+        
+        static UINT8 start_flag=0;
+
+        //RCC_ADCCLKConfig(RCC_PCLK2_Div8);
+        //RCC_APB2PeriphClockCmd(gt_fk_periph_register[port_index]|gt_fk_adc_register[set],ENABLE);
+        //GPIO_InitStructure.GPIO_Pin = pin;
+        //GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+        //GPIO_Init((GPIO_TypeDef*)port, &GPIO_InitStructure);
+
+        //if (func_index==FK_ADC_DUAL_DMA_FUNC)
+        //{
+        //    port2=(UINT32)gt_fk_adc_port[dma_channel];
+        //    port2_index=fk_port_index(port2);
+        //    channel2=dma_channel;
+        //    dma_channel=FK_DMA_CHANNEL1;
+        //    RCC_APB2PeriphClockCmd(gt_fk_periph_register[port2_index],ENABLE);
+        //    GPIO_InitStructure.GPIO_Pin = gt_fk_adc_pin[channel2];
+        //    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+        //    GPIO_Init((GPIO_TypeDef*)port2, &GPIO_InitStructure);
+        //}
+
+        //if (func_index==FK_ADC_INTERRUPT_FUNC)
+        //    fk_nvic_enable(ADC1_IRQn,FK_ADC1_2_PRIORITY,ENABLE);
+
+        //ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+        //ADC_InitStructure.ADC_ScanConvMode = ENABLE;
+        //if (func_mode==FK_ADC_SINGLE_MODE)
+        //    ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
+        //else
+        //    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+        //
+        //ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+        //ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+        //ADC_InitStructure.ADC_NbrOfChannel = 1;
+
+        //if (func_index==FK_ADC_DMA_FUNC || func_index==FK_ADC_DUAL_DMA_FUNC)
+        {
+           //DMA_InitTypeDef DMA_InitStructure;
+           //if (dma_channel<=7)
+           //    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+           //else
+           //    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
+           //fk_nvic_enable(gt_fk_dma_irq_register[dma_channel],gt_fk_dma_priority[dma_channel],ENABLE);
+
+            
+            
+            //hadcdma->Instance->CPAR = (uint32_t)&(((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL])->DR);
+            //hadcdma->Instance->CNDTR =  size;
+            //hadcdma->Instance->CMAR =  (uint32_t)buf;
+            
+            //*((UINT16*)&gs_fk_interrupt_list)|=((0x01)<<(dma_channel));
+            //DMA_ITConfig((DMA_Channel_TypeDef *)gt_fk_dma_channel_register[dma_channel], DMA_IT_TC, ENABLE);
+            //HAL_DMA_Start()
+            //DMA_Cmd((DMA_Channel_TypeDef *)gt_fk_dma_channel_register[dma_channel], ENABLE);
+            //if (func_index==FK_ADC_DUAL_DMA_FUNC)
+            //{
+            //    ADC_InitStructure.ADC_Mode = ADC_Mode_RegSimult;
+            //    ADC_InitStructure.ADC_ScanConvMode = ENABLE;
+            //    ADC_InitStructure.ADC_NbrOfChannel = 2;
+            //}
+           // ADC_InitStructure.ADC_ScanConvMode = ENABLE;
+            
+            //ADC_DMACmd((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL], ENABLE);
+            //gfunc_fk_dma_func[dma_channel]=func;
+        }
+        HAL_ADC_Stop_DMA(hdac);
+        hdac->Init.ScanConvMode = ADC_SCAN_DISABLE;
+        hdac->Init.ContinuousConvMode = ENABLE;
+        hdac->Init.DiscontinuousConvMode = DISABLE;
+        hdac->Init.ExternalTrigConv = ADC_SOFTWARE_START;
+        hdac->Init.DataAlign = ADC_DATAALIGN_RIGHT;
+        hdac->Init.NbrOfConversion = 1;        
+        HAL_ADC_Init(hdac);
+        
+        ADC_ChannelConfTypeDef sConfig = {0};
+        sConfig.Channel = channel;
+        sConfig.Rank = ADC_REGULAR_RANK_1;
+        sConfig.SamplingTime = ADC_SAMPLETIME_55CYCLES_5;
+        HAL_ADC_ConfigChannel(hdac, &sConfig);
+    
+        HAL_DMA_DeInit(hadcdma);
+        HAL_DMA_Init(hadcdma);
+        HAL_ADC_Start_DMA(hdac, (UINT32*)buf, size);
+        
+        gfunc_fk_dma_func[0]=func;
+        //ADC_RegularChannelConfig((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL], channel, 1, ADC_SampleTime_28Cycles5);
+        //if (func_index==FK_ADC_DUAL_DMA_FUNC)
+        //    ADC_RegularChannelConfig((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL], channel2, 2, ADC_SampleTime_28Cycles5);
+        //ADC_ITConfig((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL], ADC_IT_EOC, ENABLE);
+        //ADC_Cmd((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL], ENABLE);
+        if(start_flag==0)
+        {
+            //start_flag=1;
+            //ADC_ResetCalibration((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL]);
+            //while(ADC_GetResetCalibrationStatus((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL]));
+            //ADC_StartCalibration((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL]);
+            //while(ADC_GetCalibrationStatus((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL]));
+        }
+        //ADC_SoftwareStartConvCmd((ADC_TypeDef*)gt_fk_adc_register[set+FK_ADC_SET_TOTAL], ENABLE);
+        //gfunc_fk_adc_func=func;
   }
   
   //**********************************************************************************************************************

@@ -40,8 +40,9 @@ extern "C"
 //#define	FK_IIC_HW_INIT_API()						                                 iic_hw_init()
 #define FK_I2C1_HW_TASK_API() 						                                    fk_i2c1_hw_task()
 #define	FK_I2C1_HW_CHECK_TIMEOUT_API()						                            fk_i2c1_hw_check_timeout_func()//HTBC
-#define	FK_I2C1_HW_BYTE_WRITE_API(addr,counter,data)  				                    fk_i2c1_hw_byte_write(addr,counter,data)
-#define	FK_I2C1_HW_BYTE_READ_API(Addr_Counter,Addr_buf,Read_Counter,iic_hw_read_buf)  	fk_i2c1_hw_byte_read(Addr_Counter,Addr_buf,Read_Counter,iic_hw_read_buf)
+
+#define	FK_I2C1_HW_BYTE_WRITE_API(devid,addr,cnt,data,timeout)  	        HAL_I2C_Mem_Write(&fk_i2c1,devid,addr,I2C_MEMADD_SIZE_8BIT,data,cnt,timeout)
+#define	FK_I2C1_HW_BYTE_READ_API(devid,addr,cnt,data,timeout)  	                HAL_I2C_Mem_Read(&fk_i2c1,devid,addr,I2C_MEMADD_SIZE_8BIT,data,cnt,timeout)
 
 //========================================================================================================//
 //! @brief I2C Bus use I/O simulation

@@ -31,23 +31,24 @@ extern "C"
 //
 //**********************************************************************************************************************
 //! @brief ADC Channel Setect Define
-enum
-{
-    FK_ADC_CHANNEL0,
-    FK_ADC_CHANNEL1,
-    FK_ADC_CHANNEL2,
-    FK_ADC_CHANNEL3,
-    FK_ADC_CHANNEL4,
-    FK_ADC_CHANNEL5,
-    FK_ADC_CHANNEL6,
-    FK_ADC_CHANNEL7,
-    FK_ADC_CHANNEL8,
-    FK_ADC_CHANNEL9,
-    FK_ADC_CHANNEL10,
-    FK_ADC_Temperature,
-    FK_ADC_Vrefint,
-    FK_ADC_TOTAL,
-};
+#define FK_ADC_CHANNEL0                ADC_CHANNEL_0 
+#define FK_ADC_CHANNEL1                ADC_CHANNEL_1 
+#define FK_ADC_CHANNEL2                ADC_CHANNEL_2 
+#define FK_ADC_CHANNEL3                ADC_CHANNEL_3 
+#define FK_ADC_CHANNEL4                ADC_CHANNEL_4 
+#define FK_ADC_CHANNEL5                ADC_CHANNEL_5 
+#define FK_ADC_CHANNEL6                ADC_CHANNEL_6 
+#define FK_ADC_CHANNEL7                ADC_CHANNEL_7 
+#define FK_ADC_CHANNEL8                ADC_CHANNEL_8 
+#define FK_ADC_CHANNEL9                ADC_CHANNEL_9 
+#define FK_ADC_CHANNEL10               ADC_CHANNEL_10
+#define FK_ADC_CHANNEL11               ADC_CHANNEL_11
+#define FK_ADC_CHANNEL12               ADC_CHANNEL_12
+#define FK_ADC_CHANNEL13               ADC_CHANNEL_13
+#define FK_ADC_CHANNEL14               ADC_CHANNEL_14
+#define FK_ADC_CHANNEL15               ADC_CHANNEL_15
+#define FK_ADC_CHANNEL16               ADC_CHANNEL_16
+#define FK_ADC_CHANNEL17               ADC_CHANNEL_17
 //**********************************************************************************************************************
 //
 // A P I   F O R   O T H E R   M O D U L E S
@@ -62,7 +63,7 @@ enum
 #define FK_SET_ADC1_CONTINUOUS_INTERRUPT_API(channel,func)                  	fk_adc_functions(FK_ADC_SET1,channel,0,FK_ADC_INTERRUPT_FUNC,FK_ADC_CONTINUOUS_MODE,func,0,0)
 
 //! @brief The API for setting ADC1 in DMA mode with interrupt function
-#define FK_SET_ADC1_DMA_API(adc_channel,buf,size,func)                      	fk_adc_functions(FK_ADC_SET1,adc_channel,FK_ADC1_DMA_CHANNEL,FK_ADC_DMA_FUNC,FK_ADC_CONTINUOUS_MODE,func,buf,size)
+#define FK_SET_ADC1_DMA_API(adc_channel,buf,size,func)                      	fk_adc_functions(&fk_adc1,adc_channel,&fk_dma_adc1,FK_ADC_DMA_FUNC,FK_ADC_CONTINUOUS_MODE,func,buf,size)
 
 //! @brief The API for setting ADC1 in polling Mode
 #define FK_SET_ADC1_POLLING_ENABLE_API(channel)                             	fk_adc_functions(FK_ADC_SET1,channel,0,FK_ADC_POLLING_FUNC,FK_ADC_SINGLE_MODE,fk_null,0,0)
